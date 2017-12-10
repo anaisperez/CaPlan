@@ -1,0 +1,80 @@
+<!doctype html>
+<html ng-app="CaplanApp"> 
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        
+        <title>CaPlan Project</title>
+
+    </head>
+    <body>
+        <div ng-controller="CampaignListController">
+            <form>
+                <label>
+                    Campaign
+                    <input type="text" ng-model="new_campaign.name" placeholder="Amex">
+                </label>
+                    
+                <label>
+                    Date
+                    <input type="date" ng-model="new_campaign.date">
+                </label>
+
+                <a href ng-click="addCampaign()">Add New Campaign</a>
+            </form>
+            
+            <ul>
+                <li ng-repeat="campaign in campaigns">
+                    {{campaign.name}}, {{campaign.date  | date: "dd/MM/yyyy"}} 
+                    <!-- Se utiliza | para aplicar filtros de formato-->
+                    <a href ng-click="editCampaign(campaign)">Edit Campaign</a>
+
+                    <form ng-show="campaign.editing">
+                        <label>
+                            Campaign
+                            <input type="text" ng-model="campaign.name" placeholder="Amex">
+                        </label>
+                            
+                        <label>
+                            Date
+                            <input type="date" ng-model="campaign.date">
+                        </label>
+        
+                        <a href ng-click="saveCampaign(campaign)">Save Campaign</a>
+                    </form>
+            
+                </li>
+            </ul>
+            
+        </div>
+
+        <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+        <script>
+            var app = angular.module("CaplanApp", []);
+
+            app.controller("CampaignListController", function($scope){
+
+                $scope.campaigns = [];
+                $scope.new_campaign = {name:"", date: new Date()};
+
+                $scope.addCampaign = function (){
+                    if ($scope.new_campaign.name != ""){
+                        $scope.campaigns.push({name:$scope.new_campaign.name, date:$scope.new_campaign.date})
+                    }  else {
+                        alert("Campaign name required");
+                    }
+                };
+
+                $scope.editCampaign = function (campaign){
+                    campaign.editing = true;
+                };
+
+                $scope.saveCampaign = function (campaign){
+                    campaign.editing = false;
+                };
+                
+                
+            })
+        </script>
+    </body>
+</html>
